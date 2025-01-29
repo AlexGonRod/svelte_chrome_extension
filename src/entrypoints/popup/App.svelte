@@ -1,5 +1,5 @@
 <script lang="ts">
-	import gemini from "../../lib/store";
+	import fetchAPI from "../../lib/fetchAPI";
 	let id = $state(getTab());
 	async function getTab(): Promise<number> {
 		const [tab] = await chrome.tabs.query({
@@ -22,7 +22,7 @@
 			action: "stopSelecting",
 			id,
 		});
-		const res = await gemini(selectedText);
+		const res = await fetchAPI(selectedText);
 		texts = res;
 	}
 </script>

@@ -1,6 +1,6 @@
 import {Gemini} from './gemini'
 
-export default async function gemini(value: string[]) {
+export default async function fetchAPI(value: string[]) {
 	
 	try {
 		const prompt = `Please rephrase this sentences in Spanish: ${value} using this JSON schema:

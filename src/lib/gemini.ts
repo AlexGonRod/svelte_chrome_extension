@@ -20,5 +20,5 @@ export class Gemini {
 		this.prompt = prompt
 	}
 
-	setResponse(){ return this.model.generateContent(this.prompt)}
+	setResponse() { return this.model.generateContent(this.prompt) }
 }
