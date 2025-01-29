@@ -4,7 +4,7 @@ A chrome extension that takes elements from user's selection and send a response
 
 ## Requirements
 
-The extension requires the following to be true:
+The extension requires the following:
 
 - Chrome or Firefox version 121 or higher
 - Application running Svelte version `^4.0.0`
@@ -15,7 +15,6 @@ Clone this repository and setup the environment with `pnpm`
 
 ```sh
 pnpm install
-
 cd workspace/extension
 pnpm dev
 ```
@@ -23,7 +22,6 @@ pnpm dev
 To work on the extension, run the `dev` script from `workspace/extension` directory
 
 ```sh
-cd workspace/extension
 pnpm build
 ```
 
