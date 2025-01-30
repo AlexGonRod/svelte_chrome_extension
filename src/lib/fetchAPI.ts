@@ -1,6 +1,11 @@
 import {Gemini} from './gemini'
 
-export default async function fetchAPI(value: string[]) {
+export type Res = {
+	error?: string | null;
+	messages: string[]
+}
+export async function fetchAPI(value: string[]) {
+	let response: Res = {error: null, messages: []}
 	
 	try {
 		const prompt = `Please rephrase this sentences in Spanish: ${value} using this JSON schema:
@@ -8,16 +13,14 @@ export default async function fetchAPI(value: string[]) {
 			Return: Array<message>`;
 
 		const result = await new Gemini(prompt).setResponse();
-		// if ((result as any).status_code !== 200) return {message: result.response.text(), success: false}
 		const res = result.response.text()
-		console.log(result)
 		const json = res.replace(/```json|```/g, '').trim()
-		const response = JSON.parse(json)
+		response.messages = JSON.parse(json)
 		return response
 		
-	} catch (error) {
-		console.error("Error: ", (error as any)?.message)
-		throw new Error((error as any)?.message)
+	} catch (err) {
+		response.error = (err as any)?.message
+		return response
 	}
 }
 

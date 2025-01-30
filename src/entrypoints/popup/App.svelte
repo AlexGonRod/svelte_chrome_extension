@@ -1,5 +1,5 @@
 <script lang="ts">
-	import fetchAPI from "../../lib/fetchAPI";
+	import {fetchAPI, type Res} from "../../lib/fetchAPI";
 	let id = $state(getTab());
 	async function getTab(): Promise<number> {
 		const [tab] = await chrome.tabs.query({
@@ -16,7 +16,7 @@
 		});
 	}
 
-	let texts: { [index: string]: string }[] = $state([]);
+	let texts: any = $state([]);
 	async function recieve() {
 		const { selectedText } = await chrome.tabs.sendMessage(await id, {
 			action: "stopSelecting",
@@ -38,7 +38,10 @@
 		>
 		<div class="content">
 			<ul>
-				{#each texts as text}
+				{#if texts.error}
+				<li><p>{texts.error}</p></li>
+				{/if}
+				{#each texts.messages as text}
 					<li>{text.message}</li>
 				{/each}
 			</ul>

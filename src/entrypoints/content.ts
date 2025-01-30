@@ -7,6 +7,8 @@ export default defineContentScript({
 		chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 			if (message.action === 'startSelecting') {
 				isSelecting = true;
+				selectedItems.clear()
+				selectedTexts.clear()
 				document.addEventListener('click', handleClick, true);
 			}
 			if (message.action === "stopSelecting") {
