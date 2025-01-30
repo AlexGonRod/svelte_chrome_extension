@@ -7,7 +7,7 @@ A chrome extension that takes elements from user's selection and send a response
 The extension requires the following:
 
 - Chrome or Firefox version 121 or higher
-- Application running Svelte version `^4.0.0`
+- Application running Svelte version `^5.1.16`
 
 ## Development
 
