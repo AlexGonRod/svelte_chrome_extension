@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {fetchAPI, type Res} from "../../lib/fetchAPI";
+	import {fetchAPI} from "../../lib/fetchAPI";
 	let id = $state(getTab());
 	async function getTab(): Promise<number> {
 		const [tab] = await chrome.tabs.query({

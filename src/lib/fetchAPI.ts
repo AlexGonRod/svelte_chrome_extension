@@ -1,6 +1,6 @@
 import {Gemini} from './gemini'
 
-export type Res = {
+type Res = {
 	error?: string | null;
 	messages: string[]
 }
