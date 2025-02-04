@@ -32,6 +32,12 @@ h1 {
   padding: 2rem;
   text-align: center;
 }
+.btns {
+	display: flex;
+	width: 300px;
+	flex-direction: row;
+	justify-content: end;
+}
 
 button {
   border-radius: 8px;

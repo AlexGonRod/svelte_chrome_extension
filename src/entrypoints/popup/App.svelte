@@ -1,5 +1,6 @@
 <script lang="ts">
-	import {fetchAPI} from "../../lib/fetchAPI";
+	import { fetchAPI } from "../../lib/fetchAPI";
+	import CopyClipboard from "../../components/CopyClipboard.svelte";
 	let id = $state(getTab());
 	async function getTab(): Promise<number> {
 		const [tab] = await chrome.tabs.query({
@@ -18,11 +19,11 @@
 
 	let texts: any = $state([]);
 	async function recieve() {
-		const { selectedText } = await chrome.tabs.sendMessage(await id, {
+		const { selectedTexts } = await chrome.tabs.sendMessage(await id, {
 			action: "stopSelecting",
 			id,
 		});
-		const res = await fetchAPI(selectedText);
+		const res = await fetchAPI(selectedTexts);
 		texts = res;
 	}
 </script>
@@ -36,10 +37,16 @@
 		<button class="btn-stop-select" onclick={recieve}
 			>Detener Selección</button
 		>
+
+		{#if texts && texts.length > 0}
+			<div class="btns">
+				<CopyClipboard tag={"li"} />
+			</div>
+		{/if}
 		<div class="content">
 			<ul>
 				{#if texts.error}
-				<li><p>{texts.error}</p></li>
+					<li><p>{texts.error}</p></li>
 				{/if}
 				{#each texts.messages as text}
 					<li>{text.message}</li>

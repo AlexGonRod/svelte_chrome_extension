@@ -1,0 +1,59 @@
+<script lang="ts">
+	import svelteLogo from "../assets/paste.png";
+	let { tag } = $props();
+
+	async function acces() {
+		const read = await (navigator.permissions.query as any)({
+			name: "clipboard-read",
+		});
+		const write = await (navigator.permissions.query as any)({
+			name: "clipboard-write",
+		});
+		return write.state === "granted" && read.state !== "denied";
+	}
+
+	async function clickToCopy() {
+		const hasPermissions = await acces();
+		if (hasPermissions && document.hasFocus()) {
+			const el = Array.from(document.querySelectorAll(tag));
+			await window.navigator.clipboard.writeText(el[0].innerText);
+			await window.navigator.clipboard
+				.readText()
+				.then((v) => console.log(v));
+		}
+	}
+</script>
+
+<!-- <button class="logo" onclick={clickToCopy} aria-label="Copy to Clipboard">
+	<img src={svelteLogo} class="copy" alt="Copy to Clipboard" /></button
+> -->
+
+<button class="logo" aria-label="Copiar" onclick={clickToCopy}>
+	<svg
+		width="14"
+		height="14"
+		viewBox="0 0 24 24"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+		class="icon-xs"
+	>
+		<path
+			fill-rule="evenodd"
+			clip-rule="evenodd"
+			d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+			fill="currentColor"
+		>
+		</path>
+	</svg>Copiar
+</button>
+
+<style>
+	.logo {
+		background-color: inherit;
+		display: flex;
+		justify-content: end;
+		gap: 1rem;
+		padding: 0.4rem;
+		align-items: center;
+	}
+</style>
