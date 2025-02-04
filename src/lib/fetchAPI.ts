@@ -6,7 +6,6 @@ type Res = {
 }
 export async function fetchAPI(value: string[]) {
 	let response: Res = {error: null, messages: []}
-	
 	try {
 		const prompt = `Please rephrase this sentences in Spanish: ${value} using this JSON schema:
 			message = {'message': string}
