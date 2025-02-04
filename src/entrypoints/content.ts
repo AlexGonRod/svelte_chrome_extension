@@ -12,13 +12,7 @@ export default defineContentScript({
 				document.addEventListener('click', handleClick, true);
 			}
 			if (message.action === "stopSelecting") {
-				const selectedText = Array.from(selectedItems).map(e => e.textContent?.trim())
-				selectedText.forEach(text => {
-					if (text) {
-						selectedTexts.add(text);
-					}
-				});
-				sendResponse({ success: true, selectedText: Array.from(selectedTexts) });
+				sendResponse({ success: true, selectedTexts: Array.from(selectedTexts) });
 				selectedItems.forEach(e => e.style.backgroundColor = "")
 
 				document.removeEventListener('click', handleClick, true);
