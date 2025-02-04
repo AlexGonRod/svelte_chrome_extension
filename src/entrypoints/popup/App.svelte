@@ -38,7 +38,7 @@
 			>Detener Selección</button
 		>
 
-		{#if texts && texts.length > 0}
+		{#if texts && texts?.messages?.length > 0}
 			<div class="btns">
 				<CopyClipboard tag={"li"} />
 			</div>
