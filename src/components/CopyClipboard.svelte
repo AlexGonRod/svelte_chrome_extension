@@ -1,5 +1,5 @@
 <script lang="ts">
-	import svelteLogo from "../assets/paste.png";
+	import Button from "./Button.svelte";
 	let { tag } = $props();
 
 	async function acces() {
@@ -24,11 +24,7 @@
 	}
 </script>
 
-<!-- <button class="logo" onclick={clickToCopy} aria-label="Copy to Clipboard">
-	<img src={svelteLogo} class="copy" alt="Copy to Clipboard" /></button
-> -->
-
-<button class="logo" aria-label="Copiar" onclick={clickToCopy}>
+<Button class="logo" aria-label="Copiar" onclick={clickToCopy}>
 	<svg
 		width="14"
 		height="14"
@@ -45,15 +41,7 @@
 		>
 		</path>
 	</svg>Copiar
-</button>
+</Button>
 
 <style>
-	.logo {
-		background-color: inherit;
-		display: flex;
-		justify-content: end;
-		gap: 1rem;
-		padding: 0.4rem;
-		align-items: center;
-	}
 </style>
