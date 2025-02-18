@@ -1,8 +1,10 @@
 export default defineBackground(() => {
-
 	chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		if (request.type === 'takeScreenshot') {
 			console.log("[background.js] Iniciando captura de pantalla");
+
+			// Guardamos el tabId del sender
+			const sourceTabId = sender.tab?.id;
 
 			chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
 				if (chrome.runtime.lastError) {
@@ -36,12 +38,24 @@ export default defineBackground(() => {
 						return canvas.convertToBlob();
 					})
 					.then(blob => {
-						// Convertir blob a data URL
 						const reader = new FileReader();
 						reader.onloadend = () => {
+							// Intentamos enviar al popup
 							chrome.runtime.sendMessage({
 								type: 'captureComplete',
 								imageData: reader.result
+							}).catch(() => {
+								// Si falla, guardamos en storage y/o notificamos al tab
+								if (sourceTabId) {
+									chrome.storage.local.set({
+										lastCapture: reader.result
+									});
+
+									chrome.tabs.sendMessage(sourceTabId, {
+										type: 'captureComplete',
+										imageData: reader.result
+									}).catch(console.error);
+								}
 							});
 						};
 						reader.readAsDataURL(blob);
@@ -51,8 +65,7 @@ export default defineBackground(() => {
 					});
 			});
 
-			return true; // Importante para mantener la conexión abierta
+			return true;
 		}
 	});
-
-})
+});

@@ -5,11 +5,31 @@ export default defineContentScript({
 		let selectedItems = new Set<HTMLElement>()
 		let selectedTexts = new Set<string>()
 		chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-			let startX, startY, endX, endY;
-			let _isSelecting = false;
-			let selectionOverlay = null;
-			let selectionBox = null;
-			let isCaptureModeActive = false;
+			let startX: number, startY: number, endX: number, endY: number
+			let _isSelecting: boolean = false;
+			let selectionOverlay: HTMLElement | null = null;
+			let selectionBox: HTMLElement | null = null;
+			let isCaptureModeActive: boolean = false;
+
+			function handleClick(event: Event) {
+				if (isSelecting) {
+					event.preventDefault()
+					const clickedElement = event.target as HTMLElement
+					const textContent = clickedElement.textContent !== undefined ? clickedElement?.textContent?.trim() : ''
+
+					if (clickedElement) {
+						if (!selectedItems.has(clickedElement)) {
+							selectedItems.add(clickedElement);
+							textContent && selectedTexts.add(textContent);
+							clickedElement.style.backgroundColor = "yellow"
+						} else {
+							selectedItems.delete(clickedElement);
+							textContent && selectedTexts.delete(textContent);
+							clickedElement.style.backgroundColor = ""
+						}
+					}
+				}
+			}
 
 			function cleanupCapture() {
 				removeSelectionElements();
@@ -18,14 +38,6 @@ export default defineContentScript({
 				// Eliminar los event listeners
 				document.removeEventListener('mousemove', handleMouseMove);
 				document.removeEventListener('mouseup', handleMouseUp);
-			}
-
-			if (isCaptureModeActive) {
-				sendResponse({
-					success: false,
-					error: "Capture already in progress"
-				});
-				return true;
 			}
 
 			function createSelectionElements() {
@@ -72,7 +84,7 @@ export default defineContentScript({
 				}
 			}
 
-			function updateSelectionBox(left, top, width, height) {
+			function updateSelectionBox(left: number, top: number, width: number, height: number) {
 				if (!selectionBox) return;
 
 				Object.assign(selectionBox.style, {
@@ -84,7 +96,7 @@ export default defineContentScript({
 				});
 			}
 
-			function handleMouseDown(e) {
+			function handleMouseDown(e: MouseEvent) {
 				if (e.button !== 0) return; // Solo botón izquierdo
 				_isSelecting = true;
 				startX = e.clientX;
@@ -93,7 +105,7 @@ export default defineContentScript({
 				updateSelectionBox(startX, startY, 0, 0);
 			}
 
-			function handleMouseMove(e) {
+			function handleMouseMove(e: MouseEvent) {
 				if (!_isSelecting) return;
 
 				endX = e.clientX;
@@ -107,7 +119,7 @@ export default defineContentScript({
 				updateSelectionBox(left, top, width, height);
 			}
 
-			function handleMouseUp(e) {
+			function handleMouseUp(e: MouseEvent) {
 				if (!_isSelecting) return;
 				_isSelecting = false;
 
@@ -134,9 +146,6 @@ export default defineContentScript({
 			}
 
 			function initializeCapture() {
-				if (isCaptureModeActive) {
-					cleanupCapture();
-				}
 
 				isCaptureModeActive = true;
 				createSelectionElements();
@@ -160,10 +169,6 @@ export default defineContentScript({
 				isSelecting = false
 			}
 			if (message.action === "checkReady") {
-				sendResponse({ ready: true });
-				return true;
-			}
-			if (message.action === "startCapture") {
 				if (isCaptureModeActive) {
 					sendResponse({
 						success: false,
@@ -171,6 +176,10 @@ export default defineContentScript({
 					});
 					return true;
 				}
+				sendResponse({ ready: true });
+				return true;
+			}
+			if (message.action === "startCapture") {
 
 				console.log("[content.js] Iniciando captura");
 				try {
@@ -178,7 +187,7 @@ export default defineContentScript({
 					sendResponse({ success: true });
 				} catch (error) {
 					console.error("[content.js] Error al iniciar captura:", error);
-					sendResponse({ success: false, error: error.message });
+					sendResponse({ success: false, error: (error as any)?.message });
 				}
 				return true;
 			}
@@ -188,26 +197,7 @@ export default defineContentScript({
 				sendResponse({ success: true });
 				return true;
 			}
-
-			function handleClick(event: Event) {
-				if (isSelecting) {
-					event.preventDefault()
-					const clickedElement = event.target as HTMLElement
-					const textContent = clickedElement.textContent !== undefined ? clickedElement?.textContent?.trim() : ''
-
-					if (clickedElement) {
-						if (!selectedItems.has(clickedElement)) {
-							selectedItems.add(clickedElement);
-							textContent && selectedTexts.add(textContent);
-							clickedElement.style.backgroundColor = "yellow"
-						} else {
-							selectedItems.delete(clickedElement);
-							textContent && selectedTexts.delete(textContent);
-							clickedElement.style.backgroundColor = ""
-						}
-					}
-				}
-			}
+			return true
 		})
 	}
 })

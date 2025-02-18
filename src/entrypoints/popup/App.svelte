@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { onMount } from "svelte";
 	import Button from "../../components/Button.svelte";
 	import CopyClipboard from "../../components/CopyClipboard.svelte";
 	let id = $state(getTab());
+
 	async function getTab(): Promise<number> {
 		const [tab] = await chrome.tabs.query({
 			active: true,
@@ -43,15 +45,16 @@
 					(response) => {
 						if (chrome.runtime.lastError) {
 							resolve({ ready: false });
-							return;
+							// return;
 						}
-						resolve(response || { ready: false });
+						resolve(response || { ready: true });
 					},
 				);
 			});
 
 			// Verificar si hay una captura activa
-			if (response.isCaptureModeActive) {
+			console.log("response: ", response);
+			if (!response.ready) {
 				console.log("[popup.js] Ya hay una captura en progreso");
 				// Opcionalmente, puedes cancelar la captura actual
 				await new Promise((resolve) => {
@@ -72,7 +75,7 @@
 							"[popup.js] Error:",
 							chrome.runtime.lastError,
 						);
-						return;
+						// return;
 					}
 					console.log("[popup.js] Iniciando captura");
 				},
@@ -81,25 +84,18 @@
 			console.error("[popup.js] Error:", error);
 		}
 	}
+	onMount(async () => {
+		// Intentamos recuperar la última captura
+		const { lastCapture } = await chrome.storage.local.get("lastCapture");
+		if (lastCapture) {
+			const img = document.createElement("img");
+			img.src = lastCapture;
+			document.body.appendChild(img);
+			// Limpiamos el storage
+			await chrome.storage.local.remove("lastCapture");
+		}
+	});
 
-	chrome.runtime.onMessage.addListener(
-		async (message, sender, sendResponse) => {
-			if (message.type === "captureComplete" && message.imageData) {
-				// Aquí puedes hacer lo que necesites con la imagen
-				console.log(
-					"[popup.js] Imagen recibida:",
-					message.imageData.substring(0, 50) + "...",
-				);
-
-				// Por ejemplo, mostrarla en el popup
-				const img = document.createElement("img");
-				img.src = message.imageData;
-				document.body.appendChild(img);
-
-				chrome.tabs.sendMessage(await id, { action: "cancelCapture" });
-			}
-		},
-	);
 </script>
 
 <main>
