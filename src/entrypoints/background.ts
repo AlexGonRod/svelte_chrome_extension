@@ -7,8 +7,8 @@ export default defineBackground(() => {
 			const sourceTabId = sender.tab?.id;
 			const lastImageExist = await chrome.storage.local.get("lastCapture");
 			if (lastImageExist) await chrome.storage.local.set({})
-			
-			chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
+
+			chrome.tabs.captureVisibleTab({ format: 'png' }, (dataUrl) => {
 				if (chrome.runtime.lastError) {
 					console.error("[background.js] Error:", chrome.runtime.lastError);
 					return;
