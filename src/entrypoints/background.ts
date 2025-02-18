@@ -1,11 +1,13 @@
 export default defineBackground(() => {
-	chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+	chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 		if (request.type === 'takeScreenshot') {
 			console.log("[background.js] Iniciando captura de pantalla");
 
 			// Guardamos el tabId del sender
 			const sourceTabId = sender.tab?.id;
-
+			const lastImageExist = await chrome.storage.local.get("lastCapture");
+			if (lastImageExist) await chrome.storage.local.set({})
+			
 			chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
 				if (chrome.runtime.lastError) {
 					console.error("[background.js] Error:", chrome.runtime.lastError);
