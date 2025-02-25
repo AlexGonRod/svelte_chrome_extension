@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Button from "../../components/Button.svelte";
+	import Loader from "../../components/Loader.svelte";
 	import CopyClipboard from "../../components/CopyClipboard.svelte";
 	let id = $state(getTab());
+	let loading = $state(false);
 
 	async function getTab(): Promise<number> {
 		const [tab] = await chrome.tabs.query({
@@ -29,7 +31,7 @@
 			action: "stopSelecting",
 			id,
 		});
-		const res = await fetchAPI(null, selectedTexts);
+		const res = await fetchAPI(selectedTexts);
 		texts = res;
 	}
 
@@ -52,8 +54,6 @@
 				);
 			});
 
-			// Verificar si hay una captura activa
-			console.log("response: ", response);
 			if (!response.ready) {
 				console.log("[popup.js] Ya hay una captura en progreso");
 				// Opcionalmente, puedes cancelar la captura actual
@@ -88,14 +88,15 @@
 		// Intentamos recuperar la última captura
 		const { lastCapture } = await chrome.storage.local.get("lastCapture");
 		if (lastCapture) {
-			const img = document.createElement("img");
-			img.src = lastCapture;
-			document.body.appendChild(img);
+			loading = true;
+			const res = await fetchAPI(lastCapture, "image");
+			texts = res;
+			loading = false;
+
 			// Limpiamos el storage
 			await chrome.storage.local.remove("lastCapture");
 		}
 	});
-
 </script>
 
 <main>
@@ -109,12 +110,15 @@
 		>
 		<Button classes="btn-stop-select" onclick={capture}>Capturar</Button>
 
-		{#if texts && texts?.messages?.length > 0}
+		{#if texts && texts?.messages?.length > 0 && !loading}
 			<div class="btns">
 				<CopyClipboard tag={"li"} />
 			</div>
 		{/if}
 		<div class="content">
+			{#if loading}
+			<Loader />
+			{:else}
 			<ul>
 				{#if texts.error}
 					<li><p>{texts.error}</p></li>
@@ -123,6 +127,19 @@
 					<li>{text.message}</li>
 				{/each}
 			</ul>
+			{/if}
 		</div>
 	</div>
 </main>
+
+<style>
+	.content {
+		width: 100%;
+		min-height: 100px;
+		padding: 10px;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+</style>
