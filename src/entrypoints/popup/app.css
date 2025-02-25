@@ -26,38 +26,142 @@ h1 {
   line-height: 1.1;
 }
 
-#app {
-  width: 320px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-.btns {
-	display: flex;
-	width: 300px;
-	flex-direction: row;
-	justify-content: end;
-	margin-top: 3px;
-}
+* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	}
+	
+	main {
+		width: 400px;
+		height: 500px;
+		background-color: #F8F9FA;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+	
+	.header {
+		width: 100%;
+		height: 60px;
+		background-color: #3B82F6;
+		border-radius: 8px 8px 0 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 20px;
+		color: white;
+	}
+	
+	.content {
+		width: 100%;
+		padding: 10px;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow-y: scroll;
+	}
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .toggle-container {
+            background-color: #2563EB;
+            border-radius: 12px;
+            height: 24px;
+            width: 90px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding-left: 5px;
+        }
+        
+        .toggle-switch {
+            width: 18px;
+            height: 18px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            left: 3px;
+        }
+        
+        .toggle-text {
+            margin-left: 25px;
+            font-size: 11px;
+        }
+        
+        .main-container {
+            width: 360px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+            padding: 20px;
+        }
+        
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+        
+        .welcome-subtitle {
+            font-size: 14px;
+            color: #6B7280;
+        }
+        
+        .tool-button {
+            width: 100%;
+            height: 60px;
+            background-color: #F3F4F6;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .tool-button:hover {
+            background-color: #E5E7EB;
+        }
+        
+        .tool-shortcut {
+            width: 24px;
+            height: 24px;
+            background-color: #E5E7EB;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tool-shortcut i {
+            font-size: 12px;
+            color: #6B7280;
+        }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
 ul, li {
 	padding-left: 0;
 }
@@ -65,6 +169,8 @@ ul, li {
 li {
 	display: block;
 	margin: 1rem 0 1rem 0;
+            color: #6B7280;
+
 }
 ul {
 	text-align: left;

@@ -100,20 +100,46 @@
 </script>
 
 <main>
-	<div class="container">
-		<h1>Dropprice</h1>
-		<Button classes="btn-select-element" onclick={send}
-			>Seleccionar Elemento</Button
-		>
-		<Button classes="btn-stop-select" onclick={recieve}
-			>Detener Selección</Button
-		>
-		<Button classes="btn-stop-select" onclick={capture}>Capturar</Button>
+	<div class="header">
+		<div class="logo-container">
+			<div class="logo">
+				<!-- SVG del logo -->
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 6H20L18 18H6L4 6Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M8 20H16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			</div>
+			<span class="logo-text">Dropprice</span>
+		</div>
+	</div> 
+			
+	 <div class="main-container">
+		<div class="tool-button" id="select-tool">
+            <Button onclick={send}>Seleccionar Elemento</Button>
+            <div class="tool-shortcut">
+                <i>⌘</i>
+            </div>
+        </div>
+		<div class="tool-button" id="stop-tool">
+            <Button onclick={recieve}>Detener Selección</Button>
+            <div class="tool-shortcut">
+                <i>⏹</i>
+            </div>
+        </div>
+		<div class="tool-button" id="capture-tool">
+            <Button onclick={capture}>Capturar</Button>
+            <div class="tool-shortcut">
+                <i>+</i>
+            </div>
+        </div>
 
 		{#if texts && texts?.messages?.length > 0 && !loading}
-			<div class="btns">
-				<CopyClipboard tag={"li"} />
-			</div>
+		<div class="tool-button" id="copy-tool">
+				<CopyClipboard  tag={"li"} />
+            <div class="tool-shortcut">
+                <i>+</i>
+            </div>
+        </div>
 		{/if}
 		<div class="content">
 			{#if loading}
@@ -131,15 +157,3 @@
 		</div>
 	</div>
 </main>
-
-<style>
-	.content {
-		width: 100%;
-		min-height: 100px;
-		padding: 10px;
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-</style>
