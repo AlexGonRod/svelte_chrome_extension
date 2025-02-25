@@ -50,7 +50,7 @@ export default defineBackground(() => {
 								// Si falla, guardamos en storage y/o notificamos al tab
 								if (sourceTabId) {
 									chrome.storage.local.set({
-										lastCapture: reader.result
+										lastCapture: reader.result 
 									});
 
 									chrome.tabs.sendMessage(sourceTabId, {
