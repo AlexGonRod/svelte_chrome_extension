@@ -1,5 +1,6 @@
 export default defineContentScript({
 	matches: ['<all_urls>'],
+	runAt:  'document_end',
 	main() {
 		let isSelecting = false;
 		let selectedItems = new Set<HTMLElement>()
