@@ -44,4 +44,7 @@
 </Button>
 
 <style>
+	svg {
+		margin: 1px 2px -2px 0;
+	}
 </style>
