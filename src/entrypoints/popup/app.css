@@ -35,7 +35,7 @@ h1 {
 	
 	main {
 		width: 400px;
-		height: 500px;
+		min-height: 500px;
 		background-color: #F8F9FA;
 		border-radius: 8px;
 		overflow: hidden;
@@ -76,31 +76,6 @@ h1 {
         .logo-text {
             font-size: 24px;
             font-weight: bold;
-        }
-        
-        .toggle-container {
-            background-color: #2563EB;
-            border-radius: 12px;
-            height: 24px;
-            width: 90px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding-left: 5px;
-        }
-        
-        .toggle-switch {
-            width: 18px;
-            height: 18px;
-            background-color: white;
-            border-radius: 50%;
-            position: absolute;
-            left: 3px;
-        }
-        
-        .toggle-text {
-            margin-left: 25px;
-            font-size: 11px;
         }
         
         .main-container {
