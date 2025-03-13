@@ -21,15 +21,20 @@ export class Gemini {
 	constructor(value: string | null, type?: string | null) {
 		this.type = type
 		this.value = value
-		this.prompt = `Please rephrase this sentences in Spanish: ${value} using this JSON schema:
+		this.prompt = `I need to you to act like a professional copywritter. You job is to write the best description based on this sentences.
+			This decription has to be professional so we can put them into an ecommerce to sell the product.
+			Use bullet point in the most important parts. Also use the reviews to write a FAQ so clients can undesrtand what it is and how it works.
+			Please rephrase all your responses into Spanish: ${value} using this JSON schema:
 			message = {'message': string}
 			Return: Array<message>`;
 	};
-
+	
 	async setResponse() {
 
 		if (this.type !== "image") {
-			return this.model.generateContent(this.prompt);
+			const model = this.model.generateContent(this.prompt);
+			console.log("model: ", model)
+			return model
 		}
 
 		try {
