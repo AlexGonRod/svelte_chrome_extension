@@ -7,7 +7,9 @@
 		border-radius: 4px;
 		display: block;
 		margin: 40px auto;
-		position: relative;
+		position: absolute;
+		top:60px;
+		left:50%;
 		background: currentColor;
 		color: #6b7280;
 		box-sizing: border-box;
@@ -35,10 +37,10 @@
 
 	@keyframes animloader {
 		0% {
-			height: 48px;
+			height: 30px;
 		}
 		100% {
-			height: 4px;
+			height: 2px;
 		}
 	}
 </style>

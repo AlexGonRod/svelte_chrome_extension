@@ -33,7 +33,6 @@ export class Gemini {
 
 		if (this.type !== "image") {
 			const model = this.model.generateContent(this.prompt);
-			console.log("model: ", model)
 			return model
 		}
 

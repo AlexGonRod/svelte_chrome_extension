@@ -10,7 +10,6 @@ export async function fetchAPI(value: string, type: string | null = null) {
 	try {
 		
 		const result = await new Gemini(value, type).setResponse();
-		
 		const res = result.response.text()
 		const json = res.replace(/```json|```/g, '').trim()
 		response.messages = JSON.parse(json)

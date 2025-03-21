@@ -1,6 +1,6 @@
 export default defineContentScript({
 	matches: ['<all_urls>'],
-	runAt:  'document_end',
+	runAt: 'document_end',
 	main() {
 		let isSelecting = false;
 		let selectedItems = new Set<HTMLElement>()
@@ -163,10 +163,10 @@ export default defineContentScript({
 				document.addEventListener('click', handleClick, true);
 			}
 			if (message.action === "stopSelecting") {
-				sendResponse({ success: true, selectedTexts: Array.from(selectedTexts) });
 				selectedItems.forEach(e => e.style.backgroundColor = "")
-
 				document.removeEventListener('click', handleClick, true);
+
+				sendResponse({ success: true, selectedTexts: Array.from(selectedTexts) });
 				isSelecting = false
 			}
 			if (message.action === "checkReady") {

@@ -6,6 +6,8 @@
 
 <style>
 	button {
+		height: 100%;
+		cursor: pointer;
 		background-color: inherit; 
 		border: none;
 		color: #111827;

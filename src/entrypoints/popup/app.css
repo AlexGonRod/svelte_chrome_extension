@@ -60,7 +60,6 @@ h1 {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		overflow-y: scroll;
 	}
         .logo-container {
             display: flex;
@@ -85,6 +84,7 @@ h1 {
             border-radius: 8px;
             border: 1px solid #E5E7EB;
             padding: 20px;
+			position: relative;
         }
         
         .welcome-text {

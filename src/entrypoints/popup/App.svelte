@@ -18,6 +18,8 @@
 	async function send() {
 		const tabId = await id;
 		if (!tabId) return;
+		
+		loading = false
 		await chrome.tabs.sendMessage(tabId, {
 			action: "startSelecting",
 			id,
